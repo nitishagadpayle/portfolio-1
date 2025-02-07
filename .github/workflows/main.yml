@@ -1,0 +1,23 @@
+name: portfolio depolyment
+
+on:
+  push:
+    branches:
+    - main
+
+jobs: 
+  depoly:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+    uses: actions/checkout@v1
+
+    - name: Configure AWS Credentials
+     uses: aws-actions/configure-aws-credentials@v1
+     with:
+       aws-access-key-id: ${{ secret.AWS-ACCESS_KEY_ID }}
+       aws-secret-access-key: ${{ secrets.AWS.SECRET_ACCESS_KEY }}
+       aws-region: ap-south-1
+
+    - name:Depoly ststic site to s3 bucket
+      run: aws s3 sync . s3://portfolio-TWS --delete
